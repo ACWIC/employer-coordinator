@@ -1,0 +1,6 @@
+[submodule "admin"]
+	path = admin
+	url = git@github.com:ACWIC/employer-admin.git
+[submodule "callback"]
+	path = callback
+	url = git@github.com:ACWIC/employer-callback.git

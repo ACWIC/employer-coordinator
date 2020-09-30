@@ -1,0 +1,45 @@
+version: '3.3'
+
+volumes:
+  minio_data: {}
+
+services:
+  callback:
+    build:
+      context: ./callback
+      dockerfile: compose/local/uvicorn/Dockerfile
+    image: employer-callback
+    volumes:
+      - ./callback:/app
+    ports:
+      - "8081:8080"
+    env_file:
+      - ./.envs/.local/.minio
+    depends_on:
+      - minio
+    command: /start
+
+  admin:
+    build:
+      context: ./admin
+      dockerfile: compose/local/uvicorn/Dockerfile
+    image: employer-admin
+    volumes:
+      - ./admin:/app
+    ports:
+      - "8082:8080"
+    env_file:
+      - ./.envs/.local/.minio
+    depends_on:
+      - minio
+    command: /start
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9001:9000"
+    env_file:
+      - ./.envs/.local/.minio
+    volumes:
+      - minio_data:/data
+    command: server /data
