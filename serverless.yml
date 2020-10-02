@@ -1,0 +1,65 @@
+service: employer-api
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "s3:*"
+      Resource: "*"
+
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  callBackBucket: employer-callback
+  codeBucket: employer-code
+
+  pythonRequirements:
+    fileName: requirements/serverless.txt
+
+package:
+  individually: true  # serverless-python-requirements: different dependencies for each function
+
+functions:
+  admin:
+    handler: handler.handler
+    module: admin # location of the lambda function app
+    environment:
+      STAGE_PREFIX: /dev
+      SERVICE_PREFIX: /admin
+      CALLBACK_BUCKET: ${self:custom.callBackBucket}
+      CODE_BUCKET: ${self:custom.codeBucket}
+    events:
+      - http:
+          path: /admin/{proxy+}
+          method: ANY
+  callback:
+    handler: handler.handler
+    module: callback  # location of the lambda function app
+    environment:
+      STAGE_PREFIX: /dev
+      SERVICE_PREFIX: /cb
+      CALLBACK_BUCKET: ${self:custom.callBackBucket}
+      CODE_BUCKET: ${self:custom.codeBucket}
+    events:
+      - http:
+          path: /cb/{proxy+}
+          method: ANY
+
+
+# CloudFormation resources
+resources:
+ Resources:
+   callBackBucket:
+     Type: AWS::S3::Bucket
+     Properties:
+       BucketName: ${self:custom.callBackBucket}
+   codeBucket:
+     Type: AWS::S3::Bucket
+     Properties:
+       BucketName: ${self:custom.codeBucket}
