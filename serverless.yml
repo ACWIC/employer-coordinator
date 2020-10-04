@@ -18,6 +18,7 @@ plugins:
 custom:
   callBackBucket: employer-callback
   codeBucket: employer-code
+  enrolmentBucket: employer-enrolment
 
   pythonRequirements:
     fileName: requirements/serverless.txt
@@ -33,6 +34,7 @@ functions:
       STAGE_PREFIX: /dev
       SERVICE_PREFIX: /admin
       CALLBACK_BUCKET: ${self:custom.callBackBucket}
+      ENROLMENT_BUCKET: ${self:custom.enrolmentBucket}
       CODE_BUCKET: ${self:custom.codeBucket}
     events:
       - http:
@@ -63,3 +65,7 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.codeBucket}
+    enrolmentBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.enrolmentBucket}
