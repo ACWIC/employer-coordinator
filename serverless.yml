@@ -54,12 +54,12 @@ functions:
 
 # CloudFormation resources
 resources:
- Resources:
-   callBackBucket:
-     Type: AWS::S3::Bucket
-     Properties:
-       BucketName: ${self:custom.callBackBucket}
-   codeBucket:
-     Type: AWS::S3::Bucket
-     Properties:
-       BucketName: ${self:custom.codeBucket}
+  Resources:
+    callBackBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.callBackBucket}
+    codeBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.codeBucket}
