@@ -8,9 +8,20 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - "s3:*"
-      Resource: "*"
-
+        - "s3:ListBucket"
+      Resource:
+        - "arn:aws:s3:::${self:custom.enrolmentBucket}"
+        - "arn:aws:s3:::${self:custom.callBackBucket}"
+        - "arn:aws:s3:::${self:custom.codeBucket}"
+    - Effect: Allow
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+        - "s3:DeleteObject"
+      Resource:
+        - "arn:aws:s3:::${self:custom.enrolmentBucket}/*"
+        - "arn:aws:s3:::${self:custom.callBackBucket}/*"
+        - "arn:aws:s3:::${self:custom.codeBucket}/*"
 
 plugins:
   - serverless-python-requirements
