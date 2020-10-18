@@ -16,9 +16,9 @@ plugins:
   - serverless-python-requirements
 
 custom:
-  callBackBucket: employer-callback
-  codeBucket: employer-code
-  enrolmentBucket: employer-enrolment
+  callBackBucket: acwic-employer-callback
+  codeBucket: acwic-employer-code
+  enrolmentBucket: acwic-employer-enrolment
 
   pythonRequirements:
     fileName: requirements/serverless.txt
