@@ -48,6 +48,7 @@ functions:
       SERVICE_PREFIX: /cb
       CALLBACK_BUCKET: ${self:custom.callBackBucket}
       CODE_BUCKET: ${self:custom.codeBucket}
+      ENROLMENT_BUCKET: ${self:custom.codeBucket}
     events:
       - http:
           path: /cb/{proxy+}
