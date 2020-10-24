@@ -3,6 +3,7 @@ frameworkVersion: '2'
 
 provider:
   name: aws
+  stage: dev
   runtime: python3.8
 
   iamRoleStatements:
@@ -10,26 +11,33 @@ provider:
       Action:
         - "s3:ListBucket"
       Resource:
-        - "arn:aws:s3:::${self:custom.enrolmentBucket}"
-        - "arn:aws:s3:::${self:custom.callBackBucket}"
-        - "arn:aws:s3:::${self:custom.codeBucket}"
+        - "arn:aws:s3:::${self:custom.enrolmentBucket.${self:custom.stage}}"
+        - "arn:aws:s3:::${self:custom.callBackBucket.${self:custom.stage}}"
+        - "arn:aws:s3:::${self:custom.codeBucket.${self:custom.stage}}"
     - Effect: Allow
       Action:
         - "s3:GetObject"
         - "s3:PutObject"
         - "s3:DeleteObject"
       Resource:
-        - "arn:aws:s3:::${self:custom.enrolmentBucket}/*"
-        - "arn:aws:s3:::${self:custom.callBackBucket}/*"
-        - "arn:aws:s3:::${self:custom.codeBucket}/*"
+        - "arn:aws:s3:::${self:custom.enrolmentBucket.${self:custom.stage}}/*"
+        - "arn:aws:s3:::${self:custom.callBackBucket.${self:custom.stage}}/*"
+        - "arn:aws:s3:::${self:custom.codeBucket.${self:custom.stage}}/*"
 
 plugins:
   - serverless-python-requirements
 
 custom:
-  callBackBucket: acwic-employer-callback
-  codeBucket: acwic-employer-code
-  enrolmentBucket: acwic-employer-enrolment
+  stage: ${opt:stage, self:provider.stage}
+  callBackBucket:
+    dev: acwic-employer-callback-dev
+    prod: acwic-employer-callback
+  codeBucket:
+    dev: acwic-employer-code-dev
+    prod: acwic-employer-code
+  enrolmentBucket:
+    dev:  acwic-employer-enrolment-dev
+    prod: acwic-employer-enrolment
 
   pythonRequirements:
     fileName: requirements/serverless.txt
@@ -42,11 +50,11 @@ functions:
     handler: handler.handler
     module: admin # location of the lambda function app
     environment:
-      STAGE_PREFIX: /dev
+      STAGE_PREFIX: /${self:custom.stage}
       SERVICE_PREFIX: /admin
-      CALLBACK_BUCKET: ${self:custom.callBackBucket}
-      ENROLMENT_BUCKET: ${self:custom.enrolmentBucket}
-      CODE_BUCKET: ${self:custom.codeBucket}
+      CALLBACK_BUCKET: ${self:custom.callBackBucket.${self:custom.stage}}
+      ENROLMENT_BUCKET: ${self:custom.enrolmentBucket.${self:custom.stage}}
+      CODE_BUCKET: ${self:custom.codeBucket.${self:custom.stage}}
     events:
       - http:
           path: /admin/{proxy+}
@@ -55,11 +63,11 @@ functions:
     handler: handler.handler
     module: callback  # location of the lambda function app
     environment:
-      STAGE_PREFIX: /dev
+      STAGE_PREFIX: /${self:custom.stage}
       SERVICE_PREFIX: /cb
-      CALLBACK_BUCKET: ${self:custom.callBackBucket}
-      CODE_BUCKET: ${self:custom.codeBucket}
-      ENROLMENT_BUCKET: ${self:custom.codeBucket}
+      CALLBACK_BUCKET: ${self:custom.callBackBucket.${self:custom.stage}}
+      CODE_BUCKET: ${self:custom.codeBucket.${self:custom.stage}}
+      ENROLMENT_BUCKET: ${self:custom.codeBucket.${self:custom.stage}}
     events:
       - http:
           path: /cb/{proxy+}
@@ -72,12 +80,12 @@ resources:
     callBackBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.callBackBucket}
+        BucketName: ${self:custom.callBackBucket.${self:custom.stage}}
     codeBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.codeBucket}
+        BucketName: ${self:custom.codeBucket.${self:custom.stage}}
     enrolmentBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.enrolmentBucket}
+        BucketName: ${self:custom.enrolmentBucket.${self:custom.stage}}
