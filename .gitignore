@@ -1,4 +1,10 @@
 .idea
 node_modules
 .serverless
+
+*~
+\#*\#
+_build
+_static
+.venv
 .DS_Store
