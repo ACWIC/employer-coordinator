@@ -80,7 +80,7 @@ Admin Service
 
 Documentation https://acwic-employer-admin.readthedocs.org
 
-Source Code: https://github.com/ACWIC/employer-provider-admin
+Source Code: https://github.com/ACWIC/employer-admin
 
 Live Endpoints:
 
@@ -91,7 +91,7 @@ Live Endpoints:
 Callback Service
 ^^^^^^^^^^^^^^^^
 
-Documentation: https://acwic-employer-ca-enrolment.readthedocs.org
+Documentation: https://acwic-employer-callback.readthedocs.org
 
 Source Code: https://github.com/ACWIC/employer-callback
 
