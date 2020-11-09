@@ -8,17 +8,28 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - "s3:*"
-      Resource: "*"
-
+        - "s3:ListBucket"
+      Resource:
+        - "arn:aws:s3:::${self:custom.enrolmentBucket}"
+        - "arn:aws:s3:::${self:custom.callBackBucket}"
+        - "arn:aws:s3:::${self:custom.codeBucket}"
+    - Effect: Allow
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+        - "s3:DeleteObject"
+      Resource:
+        - "arn:aws:s3:::${self:custom.enrolmentBucket}/*"
+        - "arn:aws:s3:::${self:custom.callBackBucket}/*"
+        - "arn:aws:s3:::${self:custom.codeBucket}/*"
 
 plugins:
   - serverless-python-requirements
 
 custom:
-  callBackBucket: employer-callback
-  codeBucket: employer-code
-  enrolmentBucket: employer-enrolment
+  callBackBucket: acwic-employer-callback
+  codeBucket: acwic-employer-code
+  enrolmentBucket: acwic-employer-enrolment
 
   pythonRequirements:
     fileName: requirements/serverless.txt
@@ -48,6 +59,7 @@ functions:
       SERVICE_PREFIX: /cb
       CALLBACK_BUCKET: ${self:custom.callBackBucket}
       CODE_BUCKET: ${self:custom.codeBucket}
+      ENROLMENT_BUCKET: ${self:custom.codeBucket}
     events:
       - http:
           path: /cb/{proxy+}

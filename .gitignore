@@ -7,3 +7,4 @@ node_modules
 _build
 _static
 .venv
+.DS_Store
