@@ -74,6 +74,13 @@ The microservice suite is provided by two components.
 Each of these components has an open-source reference implementation
 that demonstrates the API using a low-cost object-store backing service.
 
+The AWS sample deployment uses API Gateway (security/orchestration),
+S3 (storage), cloudwatch (logging) and lambda (serverless compute)
+services, using the provider-agnostic `serverless` framework
+for packaging and deployment.
+
+.. image:: aws_deployment.png
+
 
 Admin Service
 ^^^^^^^^^^^^^

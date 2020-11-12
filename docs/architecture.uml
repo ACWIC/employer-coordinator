@@ -1,13 +1,12 @@
 @startuml
 
    package "Employer\nIntegration Microservices" {
-       database "Callback\nRepository" as cbq
-       component "Callback\nHandler" as cbh
+       database "Callbacks" as cbq
+       component "Callback\nService" as cbh
        cbh -down-> cbq
-       component "Callback\nHandler" as cbh
        component "Admin\nService" as emp_admin
        emp_admin -up-> cbq
-       database "Code\nRespository" as config
+       database "Enrolments" as config
        cbh -down-> config
        emp_admin -up-> config
    }
