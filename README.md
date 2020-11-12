@@ -1,9 +1,9 @@
 # employer-coordinator
-Operations management for the employer services
+Operations management for the employer services, see https://acwic-employer-coordinator.readthedocs.io for context and documentation.
 
-This app contains the recipes for development and deployment of the employer services together.
+This app contains the recipes for development and deployment of the suite of employer services together.
  
- ## How to run:
+ ## How to run locally (development etc):
  First clone the project with the submodules. These submodules include the individual services.
  
  `git clone --recurse-submodules git@github.com:ACWIC/employer-coordinator.git`
@@ -20,7 +20,6 @@ Open `localhost:8081/docs` for the `callback` service swagger documentation.
 Open `localhost:8082/docs` for the `admin` service swagger documentation.
 
 
-
 ## Production configuration:
 
 There's two environments: dev, and prod
@@ -35,7 +34,6 @@ to deploy to prod
 sls deploy --stage prod
 ```
 
-
 There's two expected environment variables:
 
 `STAGE_PREFIX`: API gateways add a prefix after the domain, but it's not passed down to the service.
@@ -49,12 +47,22 @@ with it. (unlike the `STAGE_PREFIX`)
 
 
 #### Deployed services:
-##### PROD
-https://prekb2sflh.execute-api.us-east-1.amazonaws.com/prod/admin/docs
 
-https://prekb2sflh.execute-api.us-east-1.amazonaws.com/prod/cb/docs
+A Continuous Integration service (CircleCI)
+is used to build, test and deploy this repo.
 
 ##### DEV
-https://ngkkz39vx8.execute-api.us-east-1.amazonaws.com/dev/admin/docs
 
-https://ngkkz39vx8.execute-api.us-east-1.amazonaws.com/dev/cb/docs
+These are continuously deployed (and likely unstable) endpoints that are updated when new code is merged into the main branch
+
+* https://ngkkz39vx8.execute-api.us-east-1.amazonaws.com/dev/admin/docs
+* https://ngkkz39vx8.execute-api.us-east-1.amazonaws.com/dev/cb/docs
+
+##### PROD (POC)
+
+These are relatively stable endpoints,
+for evaluation and developing systems integrations.
+They are deployed when new `-stable` tags get created:
+
+* https://prekb2sflh.execute-api.us-east-1.amazonaws.com/prod/admin/docs
+* https://prekb2sflh.execute-api.us-east-1.amazonaws.com/prod/cb/docs
